@@ -76,14 +76,16 @@ def fitness(chromosome):
     return fitness
 
 
-# Next, we will need a suitable selection function. For the purposes of this project, we can use tournament selection because it is simple to implement and understand and provides good selection pressure.
+# Next, we will need a suitable selection function. For the purposes of this project, we can use tournament selection because it is simple to implement, understand, and provides good selection pressure.
 def tournament_selection(x, y):
     pass
 
 
+# For the crossover, a one-point crossover can be implemented. This involves selecting a random crossover point along the chromosome and swapping the segments after that point between two parent chromosomes to create two offspring. This will be done at the pose level to maintain the integrity of each pose. A more advanced crossover method is possible, but such complexity is not necessary for a basic start.
 def crossover(x, y):
     pass
 
 
+# Finally, we need a mutation function to introduce random variations into the chromosomes. This helps maintain genetic diversity within the population and allows the algorithm to explore a broader search space. A method we could use is simply adding or subtracting a small random value within a reasonable range (like -0.1 to 0.1 radians) to a randomly selected joint angle in a randomly selected pose.
 def mutate(x):
     pass
