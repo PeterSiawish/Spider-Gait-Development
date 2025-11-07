@@ -39,6 +39,15 @@ def main():
         # Refer to the fitness() function in utility_functions.py for more details.
         fitness_scores.append(score)
 
+    print(
+        "population shape:",
+        len(population),
+        "x",
+        len(population[0]),
+        "x",
+        len(population[0][0]),
+    )
+
 
 # Run the main function if this script is executed directly (standard Python practice)
 if __name__ == "__main__":
