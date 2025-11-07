@@ -39,6 +39,8 @@ def main():
         # Refer to the fitness() function in utility_functions.py for more details.
         fitness_scores.append(score)
 
+    print("Average fitness:", sum(fitness_scores) / len(fitness_scores))
+
     print(
         "population shape:",
         len(population),
@@ -51,6 +53,7 @@ def main():
 
 # Run the main function if this script is executed directly (standard Python practice)
 if __name__ == "__main__":
+    rd.seed(42)  # For reproducibility during testing and debugging
     start_time = time.perf_counter()
     main()
     end_time = time.perf_counter()

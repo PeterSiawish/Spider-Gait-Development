@@ -6,7 +6,8 @@ import random as rd
 def initialize_gait():
     # The 'gait' list will be returned as a chromosome
     gait = []
-    for _ in range(300):  # For 300 individual poses
+    num_of_poses = 300
+    for _ in range(num_of_poses):
         pose = []  # Create a new list for each pose
         for __ in range(8):  # 8 legs
             # Upon testing different possible angles for different joints, the following ranges make the most sense to use:
@@ -23,4 +24,49 @@ def initialize_gait():
 
 
 # A key component of any genetic algorithm is the fitness function, which evaluates how 'fit' or 'good' a particular chromosome is. Below is a fitness function that evaluates a gait based on specific criteria.
-def fitness(chromosome): ...
+def fitness(chromosome):
+    # For demonstration purposes, let's define a simple fitness function that rewards gaits with smoother transitions between poses and symmetry.
+
+    total_smoothness_penalty = 0
+    total_symmetry_penalty = 0
+
+    num_poses = len(chromosome)  # Should be 300
+    num_legs = 8
+
+    # First, let's define a smoothness metric: penalize large changes in joint angles between consecutive poses.
+    for i in range(num_poses - 1):
+        current_pose = chromosome[i]
+        next_pose = chromosome[i + 1]
+        pose_smoothness_penalty = 0.0
+
+        for j in range(len(current_pose)):
+            angle_difference = current_pose[j] - next_pose[j]
+            pose_smoothness_penalty += angle_difference**2
+
+        total_smoothness_penalty += pose_smoothness_penalty
+
+    # Next, let's define a symmetry metric: penalize big differences between left and right legs.
+    # Recall which joints mirror each other from the spider figure provided.
+    # L1a (index 0) & R1a (index 21), L2a (index 3) & R2a (index 18), L3a (index 6) & R3a (index 15), L4a (index 9) & R4a (index 12 )
+    # Note that only Coxa joints will be used to measure the symmetry, as the relative positions of the tibia and femurs are allowed some flexibility.
+    # So we will compare these pairs across all poses.
+    mirror_joints_indices = [(0, 21), (3, 18), (6, 15), (9, 12)]
+    for pose in chromosome:
+        pose_symmetry_penalty = 0
+        for left_index, right_index in mirror_joints_indices:
+            left_coxa = pose[left_index]
+            right_coxa = pose[right_index]
+            symmetry_difference = left_coxa - right_coxa
+            pose_symmetry_penalty += symmetry_difference**2
+        total_symmetry_penalty += pose_symmetry_penalty
+
+    # We take the averages of the penalty so that the penalty is not affect by the number of chromosomes. Otherwise, the fitness of a population for 5000 would behave differently from a population of 1000.
+    average_smoothness_penalty = total_smoothness_penalty / (num_poses - 1)
+    average_symmetry_penalty = total_symmetry_penalty / num_poses
+
+    # Add a weighting system to determine what is more desired from the gait:
+    total_penalty = 100 * average_smoothness_penalty + 50 * average_symmetry_penalty
+
+    fitness = 1.0 / (1.0 + total_penalty)
+
+    return fitness
