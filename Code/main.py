@@ -1,7 +1,13 @@
 from math import pi
 import random as rd
 import time
-from utility_functions import initialize_gait, fitness
+from utility_functions import (
+    initialize_gait,
+    fitness,
+    tournament_selection,
+    crossover,
+    mutate,
+)
 
 
 # Start by identifying what a possible chromosome could be.
@@ -25,30 +31,36 @@ chromosome_2d_list: list[list[float]] = []
 # Define a main function to encapsulate the various processes alongside benchmarking and testing (all other functions with explanations will be defined in utility_functions.py):
 def main():
     population_size = 1000
+    num_generations = 2
     population = []
 
+    # Initialize the population with random chromosomes (gaits)
     for _ in range(population_size):
         chromosome = initialize_gait()
         # Refer to the initialize_gait() function in utility_functions.py for more details.
         population.append(chromosome)
 
-    fitness_scores = []
-    # The 'fitness_scores' list will hold fitness scores for each chromosome in the population, so it would have a length corresponding to the population size. Keep in mind a chromosome is the same as a full gait.
-    for member in population:
-        score = fitness(member)
-        # Refer to the fitness() function in utility_functions.py for more details.
-        fitness_scores.append(score)
+    # Evolve the population over a number of generations
+    for generation in range(num_generations):
+        new_population = []
+        fitness_scores = []
+        # The 'fitness_scores' list will hold fitness scores for each chromosome in the population, so it would have a length corresponding to the population size. Keep in mind a chromosome is the same as a full gait.
+        for member in population:
+            score = fitness(member)
+            # Refer to the fitness() function in utility_functions.py for more details.
+            fitness_scores.append(score)
 
-    print("Average fitness:", sum(fitness_scores) / len(fitness_scores))
+        # while len(new_population) < population_size:
+        # parent1 = tournament_selection(population, fitness_scores)
+        # parent2 = tournament_selection(population, fitness_scores)
+        # child1, child2 = crossover(parent1, parent2)
+        # child1 = mutate(child1)
+        # child2 = mutate(child2)
+        # new_population.extend([child1, child2])
 
-    print(
-        "population shape:",
-        len(population),
-        "x",
-        len(population[0]),
-        "x",
-        len(population[0][0]),
-    )
+        # population = new_population[:population_size]
+
+        # print(f"Generation {generation + 1}: Best Fitness = {max(fitness_scores):.4f}")
 
 
 # Run the main function if this script is executed directly (standard Python practice)

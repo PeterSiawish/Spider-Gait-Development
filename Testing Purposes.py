@@ -1,4 +1,2 @@
-test = [(1, 2), (3, 4)]
-
-for i, j in test:
-    print(i, j)
+list1 = [1, 2, 3]
+list2 = [4, 5, 6]

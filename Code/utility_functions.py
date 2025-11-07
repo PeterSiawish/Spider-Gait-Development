@@ -17,6 +17,11 @@ def initialize_gait():
             coxa_angle = rd.uniform(-pi / 2, pi / 2)
             femur_angle = rd.uniform(-2 * pi / 3, 0)
             tibia_angle = rd.uniform(-2 * pi / 3, 0)
+            # Keep the following angle ranges for future testing.
+            # coxa_angle = rd.uniform(-pi, pi)
+            # femur_angle = rd.uniform(-pi, pi)
+            # tibia_angle = rd.uniform(-pi, pi)
+
             pose.extend([coxa_angle, femur_angle, tibia_angle])
         gait.append(pose)
 
@@ -31,7 +36,6 @@ def fitness(chromosome):
     total_symmetry_penalty = 0
 
     num_poses = len(chromosome)  # Should be 300
-    num_legs = 8
 
     # First, let's define a smoothness metric: penalize large changes in joint angles between consecutive poses.
     for i in range(num_poses - 1):
@@ -65,8 +69,21 @@ def fitness(chromosome):
     average_symmetry_penalty = total_symmetry_penalty / num_poses
 
     # Add a weighting system to determine what is more desired from the gait:
-    total_penalty = 100 * average_smoothness_penalty + 50 * average_symmetry_penalty
+    total_penalty = 75 * average_smoothness_penalty + 50 * average_symmetry_penalty
 
-    fitness = 1.0 / (1.0 + total_penalty)
+    fitness = 10000.0 / (1.0 + total_penalty)
 
     return fitness
+
+
+# Next, we will need a suitable selection function. For the purposes of this project, we can use tournament selection because it is simple to implement and understand and provides good selection pressure.
+def tournament_selection(x, y):
+    pass
+
+
+def crossover(x, y):
+    pass
+
+
+def mutate(x):
+    pass
