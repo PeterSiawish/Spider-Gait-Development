@@ -1,6 +1,8 @@
 from math import pi
 import random as rd
 import time
+from utility_functions import initialize_gait, fitness
+
 
 # Start by identifying what a possible chromosome could be.
 # Since the MATLAB function accepts 1x24 vectors, a logical starter could be a list of 24 floating-point numbers, each representing a joint angle in radians.
@@ -20,38 +22,21 @@ chromosome_2d_list: list[list[float]] = []
 # Each inner list would contain 24 floating-point numbers representing joint angles for a specific pose (indices from 0-299 would represent the 300 poses required for the full gait.) We can then define our chromosome as a 300x24 structure that contains a full gait. However, this 300x24 structure represents a single chromosome. In a genetic algorithm, we typically work with a population of such chromosomes. Therefore in order to create a suitable/reasonable population, we would need a large amount of these 300x24 chromosomes to form a population.
 
 
-# Below is a function to initialize such a chromosome with random values within a specified range. The range boundaries will be explained below as well. Recall that each full gait is a single chromosome.
-def initialize_gait():
-    # The 'gait' list will be returned as a chromosome
-    gait = []
-    for _ in range(300):  # For 300 individual poses
-        pose = []  # Create a new list for each pose
-        for __ in range(24):  # 24 joints
-            # Since we are dealing with radians, the range will be from -π to π is a logical starting point. The fitness function can later determine ideal values for specific joints.
-            angle = rd.uniform(-pi, pi)
-            pose.append(angle)
-        gait.append(pose)
-
-    return gait
-
-
-# A key component of any genetic algorithm is the fitness function, which evaluates how 'fit' or 'good' a particular chromosome is. Below is a fitness function that evaluates a gait based on specific criteria.
-def fitness(chromosome): ...
-
-
-# Define a main function to encapsulate the various processes alongside benchmarking and testing:
+# Define a main function to encapsulate the various processes alongside benchmarking and testing (all other functions with explanations will be defined in utility_functions.py):
 def main():
     population_size = 1000
     population = []
 
     for _ in range(population_size):
         chromosome = initialize_gait()
+        # Refer to the initialize_gait() function in utility_functions.py for more details.
         population.append(chromosome)
 
     fitness_scores = []
     # The 'fitness_scores' list will hold fitness scores for each chromosome in the population, so it would have a length corresponding to the population size. Keep in mind a chromosome is the same as a full gait.
     for member in population:
         score = fitness(member)
+        # Refer to the fitness() function in utility_functions.py for more details.
         fitness_scores.append(score)
 
 
