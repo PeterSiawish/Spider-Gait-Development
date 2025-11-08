@@ -32,8 +32,8 @@ from utility_functions import (
 
 # Define a main function to encapsulate the various processes alongside benchmarking and testing (all other functions with explanations will be defined in utility_functions.py):
 def main():
-    population_size = 200
-    num_generations = 30
+    population_size = 2000
+    num_generations = 300
     population = []
     fitness_scores = []
     # The 'fitness_scores' list will hold fitness scores for each chromosome in the population, so it would have a length corresponding to the population size. Keep in mind a chromosome is the same as a full gait.
@@ -73,6 +73,7 @@ def main():
     best_gait = population[best_member_index]
     print(f"Best fitness achieved: {fitness_scores[best_member_index]}")
     print("\n===================================")
+    print("Saving the best gait to 'best_gait.npy'...")
     np.save("best_gait.npy", best_gait)
 
 

@@ -105,6 +105,10 @@ def crossover(parent1, parent2):
 def mutate(chromosome, mutation_rate=0.01, mutation_strength=0.1):
     # The mutation strength is the value that will added or subtracted to the individual angles if they are to be mutated.
 
+    COXA_MIN, COXA_MAX = -pi / 2, pi / 2
+    FEMUR_TIBIA_MIN, FEMUR_TIBIA_MAX = -2 * pi / 3, 0
+    # We take the boundaries of the joints to ensure that the mutated angles remain within valid ranges.
+
     # Make a deep copy of the chromosome, which will be returned as the new chromosome.
     mutated_chromosome = [pose[:] for pose in chromosome]
 
@@ -114,4 +118,20 @@ def mutate(chromosome, mutation_rate=0.01, mutation_strength=0.1):
                 mutated_chromosome[pose_index][joint_index] += rd.uniform(
                     -mutation_strength, mutation_strength
                 )
+
+                # If the joint index is a multiple of 3 (0, 3, 6, ...), it corresponds to a Coxa joint.
+                if joint_index % 3 == 0:
+                    mutated_chromosome[pose_index][joint_index] = max(
+                        COXA_MIN,
+                        min(COXA_MAX, mutated_chromosome[pose_index][joint_index]),
+                    )
+                else:
+                    mutated_chromosome[pose_index][joint_index] = max(
+                        FEMUR_TIBIA_MIN,
+                        min(
+                            FEMUR_TIBIA_MAX,
+                            mutated_chromosome[pose_index][joint_index],
+                        ),
+                    )
+
     return mutated_chromosome

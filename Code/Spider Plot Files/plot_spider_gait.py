@@ -1,5 +1,5 @@
 import numpy as np
-import os
+import os, sys
 from math import pi
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401, needed for 3D projection
@@ -164,7 +164,14 @@ if __name__ == "__main__":
 
     # Get the folder where this script resides
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    gait_path = os.path.join(script_dir, "best_gait.npy")
+    npy_files = [f for f in os.listdir(script_dir) if f.endswith(".npy")]
+
+    if not npy_files:
+        sys.exit("❌ No .npy file found in the current directory.")
+
+    gait_file = npy_files[0]
+
+    gait_path = os.path.join(script_dir, gait_file)
 
     gait = np.load(gait_path)
 
