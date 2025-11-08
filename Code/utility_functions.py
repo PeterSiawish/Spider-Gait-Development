@@ -77,13 +77,31 @@ def fitness(chromosome):
 
 
 # Next, we will need a suitable selection function. For the purposes of this project, we can use tournament selection because it is simple to implement, understand, and provides good selection pressure.
-def tournament_selection(x, y):
-    pass
+def tournament_selection(population, fitness_scores, tournament_size=3):
+    # First, we randomly select 'tournament_size/k' individuals from the population
+    selected_indices = rd.sample(range(len(population)), tournament_size)
+
+    # Once a random subset is selected, we determine the individual with the highest fitness score among them.
+    # We pass a lambda function to the max() function to compare them based on their fitness scores.
+    best_index = max(selected_indices, key=lambda i: fitness_scores[i])
+
+    # With the best index/individual identified, we return the corresponding chromosome from the population as a deep copy to avoid unintended modifications to the original population.
+    return [member[:] for member in population[best_index]]
 
 
 # For the crossover, a one-point crossover can be implemented. This involves selecting a random crossover point along the chromosome and swapping the segments after that point between two parent chromosomes to create two offspring. This will be done at the pose level to maintain the integrity of each pose. A more advanced crossover method is possible, but such complexity is not necessary for a basic start.
-def crossover(x, y):
-    pass
+def crossover(parent1, parent2):
+    num_poses = len(parent1)
+    crossover_point = rd.randint(1, num_poses - 2)
+
+    child1 = parent1[:crossover_point] + parent2[crossover_point:]
+    child2 = parent2[:crossover_point] + parent1[crossover_point:]
+
+    # Make sure the children are returned as deep copies to prevent referencing bugs.
+    child1 = [pose[:] for pose in child1]
+    child2 = [pose[:] for pose in child2]
+
+    return child1, child2
 
 
 # Finally, we need a mutation function to introduce random variations into the chromosomes. This helps maintain genetic diversity within the population and allows the algorithm to explore a broader search space. A method we could use is simply adding or subtracting a small random value within a reasonable range (like -0.1 to 0.1 radians) to a randomly selected joint angle in a randomly selected pose.

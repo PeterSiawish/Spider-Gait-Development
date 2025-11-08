@@ -30,7 +30,7 @@ chromosome_2d_list: list[list[float]] = []
 
 # Define a main function to encapsulate the various processes alongside benchmarking and testing (all other functions with explanations will be defined in utility_functions.py):
 def main():
-    population_size = 1000
+    population_size = 100
     num_generations = 2
     population = []
 
@@ -39,6 +39,8 @@ def main():
         chromosome = initialize_gait()
         # Refer to the initialize_gait() function in utility_functions.py for more details.
         population.append(chromosome)
+
+    print(f"Initialized population with {population_size} chromosomes...")
 
     # Evolve the population over a number of generations
     for generation in range(num_generations):
@@ -50,17 +52,17 @@ def main():
             # Refer to the fitness() function in utility_functions.py for more details.
             fitness_scores.append(score)
 
-        # while len(new_population) < population_size:
-        # parent1 = tournament_selection(population, fitness_scores)
-        # parent2 = tournament_selection(population, fitness_scores)
-        # child1, child2 = crossover(parent1, parent2)
-        # child1 = mutate(child1)
-        # child2 = mutate(child2)
-        # new_population.extend([child1, child2])
+        while len(new_population) < population_size:
+            break
+            parent1 = tournament_selection(population, fitness_scores)
+            parent2 = tournament_selection(population, fitness_scores)
+            child1, child2 = crossover(parent1, parent2)
+            # child1 = mutate(child1)
+            # child2 = mutate(child2)
+            new_population.extend([child1, child2])
 
         # population = new_population[:population_size]
-
-        # print(f"Generation {generation + 1}: Best Fitness = {max(fitness_scores):.4f}")
+        print(f"Generation #{generation + 1} completed...")
 
 
 # Run the main function if this script is executed directly (standard Python practice)
