@@ -1,6 +1,7 @@
 from math import pi
 import random as rd
 import time
+import numpy as np
 import scipy.io as sio  # For saving the best gait to a .mat file
 from utility_functions import (
     initialize_gait,
@@ -31,8 +32,8 @@ from utility_functions import (
 
 # Define a main function to encapsulate the various processes alongside benchmarking and testing (all other functions with explanations will be defined in utility_functions.py):
 def main():
-    population_size = 1000
-    num_generations = 300
+    population_size = 200
+    num_generations = 30
     population = []
     fitness_scores = []
     # The 'fitness_scores' list will hold fitness scores for each chromosome in the population, so it would have a length corresponding to the population size. Keep in mind a chromosome is the same as a full gait.
@@ -72,7 +73,7 @@ def main():
     best_gait = population[best_member_index]
     print(f"Best fitness achieved: {fitness_scores[best_member_index]}")
     print("\n===================================")
-    sio.savemat("best_gait.mat", {"best_gait": best_gait})
+    np.save("best_gait.npy", best_gait)
 
 
 # Run the main function if this script is executed directly (standard Python practice)

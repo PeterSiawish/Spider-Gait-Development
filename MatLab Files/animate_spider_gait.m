@@ -25,6 +25,9 @@ function animate_spider_gait()
     end
 
     fprintf('Animating spider gait with %d frames...\n', num_frames);
+    v = VideoWriter('spider_gait.avi');  % output filename
+    v.FrameRate = 30;                    % optional: set FPS
+    open(v);
 
     % ======== Animation loop ========
     figure('Color','w');
@@ -33,8 +36,12 @@ function animate_spider_gait()
         plot_spider_pose(gait(frame, :));
         title(sprintf('Spider Gait Animation - Frame %d of %d', frame, num_frames), 'FontSize', 14);
         drawnow; % Render frame immediately
-        pause(0.3); % Adjust playback speed (smaller = faster)
-    end
 
+        frameImg = getframe(gcf);
+        writeVideo(v, frameImg);
+
+        pause(0.15); % Adjust playback speed (smaller = faster)
+    end
+    close(v);
     fprintf('Animation complete!\n');
 end

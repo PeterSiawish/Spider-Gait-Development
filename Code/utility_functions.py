@@ -17,10 +17,6 @@ def initialize_gait():
             coxa_angle = rd.uniform(-pi / 2, pi / 2)
             femur_angle = rd.uniform(-2 * pi / 3, 0)
             tibia_angle = rd.uniform(-2 * pi / 3, 0)
-            # Keep the following angle ranges for future testing.
-            # coxa_angle = rd.uniform(-pi, pi)
-            # femur_angle = rd.uniform(-pi, pi)
-            # tibia_angle = rd.uniform(-pi, pi)
 
             pose.extend([coxa_angle, femur_angle, tibia_angle])
         gait.append(pose)
