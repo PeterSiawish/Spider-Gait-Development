@@ -51,7 +51,7 @@ def fitness(chromosome):
 
     # Next, let's define a symmetry metric: penalize big differences between left and right legs.
     # Recall which joints mirror each other from the spider figure provided.
-    # L1a (index 0) & R1a (index 21), L2a (index 3) & R2a (index 18), L3a (index 6) & R3a (index 15), L4a (index 9) & R4a (index 12 )
+    # L1a (index 0) & R1a (index 21), L2a (index 3) & R2a (index 18), L3a (index 6) & R3a (index 15), L4a (index 9) & R4a (index 12 ).
     # Note that only Coxa joints will be used to measure the symmetry, as the relative positions of the tibia and femurs are allowed some flexibility.
     # So we will compare these pairs across all poses.
     mirror_joints_indices = [(0, 21), (3, 18), (6, 15), (9, 12)]
@@ -105,5 +105,16 @@ def crossover(parent1, parent2):
 
 
 # Finally, we need a mutation function to introduce random variations into the chromosomes. This helps maintain genetic diversity within the population and allows the algorithm to explore a broader search space. A method we could use is simply adding or subtracting a small random value within a reasonable range (like -0.1 to 0.1 radians) to a randomly selected joint angle in a randomly selected pose.
-def mutate(x):
-    pass
+def mutate(chromosome, mutation_rate=0.01, mutation_strength=0.1):
+    # The mutation strength is the value that will added or subtracted to the individual angles if they are to be mutated.
+
+    # Make a deep copy of the chromosome, which will be returned as the new chromosome.
+    mutated_chromosome = [pose[:] for pose in chromosome]
+
+    for pose_index in range(len(mutated_chromosome)):
+        for joint_index in range(len(mutated_chromosome[pose_index])):
+            if rd.random() < mutation_rate:
+                mutated_chromosome[pose_index][joint_index] += rd.uniform(
+                    -mutation_strength, mutation_strength
+                )
+    return mutated_chromosome
