@@ -71,6 +71,7 @@ def fitness(chromosome):
     # Add a weighting system to determine what is more desired from the gait:
     total_penalty = 75 * average_smoothness_penalty + 50 * average_symmetry_penalty
 
+    # Finally, convert the penalty into a fitness score. A lower penalty should yield a higher fitness score, which is why we invert it here. The reason the numerator is 10000.0 is to scale the fitness score to a more manageable and human-readable number. It does not affect the relative fitness between different chromosomes because they are all scaled by the same factor.
     fitness = 10000.0 / (1.0 + total_penalty)
 
     return fitness
@@ -86,7 +87,7 @@ def tournament_selection(population, fitness_scores, tournament_size=3):
     best_index = max(selected_indices, key=lambda i: fitness_scores[i])
 
     # With the best index/individual identified, we return the corresponding chromosome from the population as a deep copy to avoid unintended modifications to the original population.
-    return [member[:] for member in population[best_index]]
+    return [pose[:] for pose in population[best_index]]
 
 
 # For the crossover, a one-point crossover can be implemented. This involves selecting a random crossover point along the chromosome and swapping the segments after that point between two parent chromosomes to create two offspring. This will be done at the pose level to maintain the integrity of each pose. A more advanced crossover method is possible, but such complexity is not necessary for a basic start.
