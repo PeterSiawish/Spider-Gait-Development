@@ -52,6 +52,7 @@ def main():
         new_population = []
 
         while len(new_population) < population_size:
+            # Refer to utility_functions.py for explanations of the below functions.
             parent1 = tournament_selection(population, fitness_scores)
             parent2 = tournament_selection(population, fitness_scores)
             child1, child2 = crossover(parent1, parent2)

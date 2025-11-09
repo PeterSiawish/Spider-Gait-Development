@@ -26,7 +26,10 @@ def initialize_gait():
 
 # A key component of any genetic algorithm is the fitness function, which evaluates how 'fit' or 'good' a particular chromosome is. Below is a fitness function that evaluates a gait based on specific criteria.
 def fitness(chromosome):
-    # For demonstration purposes, let's define a simple fitness function that rewards gaits with smoother transitions between poses and symmetry.
+    # The fitness function will take various criteria into account. Currently, 3 main factors will be accounted for:
+    # 1. How smooth the movement is (penalize radical changes between angles)
+    # 2. How symmetric the pose is (penalize non-symmetry)
+    # 3. How often adjacent legs cross each other (heavily penalize legs crossing)
 
     total_smoothness_penalty = 0
     total_symmetry_penalty = 0
@@ -78,7 +81,7 @@ def fitness(chromosome):
             if diff < 0.25:
                 pose_leg_crossing_penalty += (0.25 - diff) ** 2
 
-        total_crossing_penalty += pose_leg_crossing_penalty
+        total_leg_crossing_penalty += pose_leg_crossing_penalty
 
     # We take the averages of the penalty so that the penalty is not affect by the number of chromosomes. Otherwise, the fitness of a population for 5000 would behave differently from a population of 1000.
     average_smoothness_penalty = total_smoothness_penalty / (num_poses - 1)
@@ -89,7 +92,7 @@ def fitness(chromosome):
     total_penalty = (
         75 * average_smoothness_penalty
         + 50 * average_symmetry_penalty
-        + 75 * average_leg_crossing_penalty
+        + 750 * average_leg_crossing_penalty
     )
 
     # Finally, convert the penalty into a fitness score. A lower penalty should yield a higher fitness score, which is why we invert it here. The reason the numerator is 10000.0 is to scale the fitness score to a more manageable and human-readable number. It does not affect the relative fitness between different chromosomes because they are all scaled by the same factor.
