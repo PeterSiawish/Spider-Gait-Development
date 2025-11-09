@@ -30,6 +30,7 @@ def fitness(chromosome):
 
     total_smoothness_penalty = 0
     total_symmetry_penalty = 0
+    total_leg_crossing_penalty = 0
 
     num_poses = len(chromosome)  # Should be 300
 
@@ -60,12 +61,36 @@ def fitness(chromosome):
             pose_symmetry_penalty += symmetry_difference**2
         total_symmetry_penalty += pose_symmetry_penalty
 
+    # We can also add a penalty for leg crossing, which does not occur in natural spider gaits.
+    for pose in chromosome:
+        coxa_angles = [pose[i] for i in range(0, len(pose), 3)]
+        left_coxa_angles = coxa_angles[:4]  # Indices for L1a, L2a, L3a, L4a
+        right_coxa_angles = coxa_angles[4:]  # Indices for R1a, R2a, R3a, R4a
+        pose_leg_crossing_penalty = 0
+
+        for i in range(len(left_coxa_angles) - 1):
+            diff = abs(left_coxa_angles[i] - left_coxa_angles[i + 1])
+            if diff < 0.25:  # threshold: how close angles can get (≈14°)
+                pose_leg_crossing_penalty += (0.25 - diff) ** 2
+
+        for i in range(len(right_coxa_angles) - 1):
+            diff = abs(right_coxa_angles[i] - right_coxa_angles[i + 1])
+            if diff < 0.25:
+                pose_leg_crossing_penalty += (0.25 - diff) ** 2
+
+        total_crossing_penalty += pose_leg_crossing_penalty
+
     # We take the averages of the penalty so that the penalty is not affect by the number of chromosomes. Otherwise, the fitness of a population for 5000 would behave differently from a population of 1000.
     average_smoothness_penalty = total_smoothness_penalty / (num_poses - 1)
     average_symmetry_penalty = total_symmetry_penalty / num_poses
+    average_leg_crossing_penalty = total_leg_crossing_penalty / num_poses
 
     # Add a weighting system to determine what is more desired from the gait:
-    total_penalty = 75 * average_smoothness_penalty + 50 * average_symmetry_penalty
+    total_penalty = (
+        75 * average_smoothness_penalty
+        + 50 * average_symmetry_penalty
+        + 75 * average_leg_crossing_penalty
+    )
 
     # Finally, convert the penalty into a fitness score. A lower penalty should yield a higher fitness score, which is why we invert it here. The reason the numerator is 10000.0 is to scale the fitness score to a more manageable and human-readable number. It does not affect the relative fitness between different chromosomes because they are all scaled by the same factor.
     fitness = 10000.0 / (1.0 + total_penalty)

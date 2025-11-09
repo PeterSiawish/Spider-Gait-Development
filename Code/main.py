@@ -1,8 +1,6 @@
-from math import pi
-import random as rd
 import time
 import numpy as np
-import scipy.io as sio  # For saving the best gait to a .mat file
+import random as rd
 from utility_functions import (
     initialize_gait,
     fitness,
@@ -46,6 +44,7 @@ def main():
 
     print(f"Initialized population with {population_size} chromosomes...")
 
+    # Calculate all the initial fitness scores
     fitness_scores = [fitness(member) for member in population]
 
     # Evolve the population over a number of generations

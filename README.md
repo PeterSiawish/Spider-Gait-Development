@@ -94,20 +94,10 @@ The project implements two approaches for gait optimization:
   - Right legs: [-135°, -105°, -75°, -45°]
 - Fixed coxa elevation: 30°
 
-## Future Work
-
-1. Implementation of fitness function for gait evaluation
-2. Crossover and mutation operators for the genetic algorithm
-3. Gait optimization criteria:
-   - Stability
-   - Energy efficiency
-   - Movement smoothness
-4. Implementation of the parametric solution approach
-
 ## License
 
 This project is licensed under the standard MIT License
 
 ## Contributors
 
-Peter Siawishh - petersrood@gmail.com
+Peter Siawish - petersrood@gmail.com
